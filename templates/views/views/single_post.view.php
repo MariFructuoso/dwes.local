@@ -4,7 +4,6 @@
 <!-- Principal Content Start -->
    <div id="single">
      <div class="container">
-
     <!-- Full Article -->
       <div class="row">
       <h2>Post Title</h2>
