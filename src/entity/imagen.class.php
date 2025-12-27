@@ -19,6 +19,7 @@ class Imagen
     // Constructor: id no se pasa. Los numéricos valen 0 por defecto.
     public function __construct($nombre, $descripcion, $categoria = 0, $numVisualizaciones = 0, $numLikes = 0, $numDownloads = 0)
     {
+        $this->id = null;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
         $this->categoria = $categoria;
@@ -101,13 +102,11 @@ class Imagen
         return $this;
     }
 
-    // Método __toString que devuelve solamente la descripción
     public function __toString()
     {
         return $this->descripcion;
     }
 
-    // Métodos para obtener las URLs completas (ruta + nombre)
     public function getUrlPortfolio()
     {
         return self::RUTA_IMAGENES_PORTFOLIO . $this->nombre;

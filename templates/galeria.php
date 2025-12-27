@@ -3,6 +3,7 @@ require_once __DIR__ . '/../src/utils/utils.class.php';
 require_once __DIR__ . '/../src/utils/file.class.php';
 require_once __DIR__ . '/../src/exceptions/FileException.class.php';
 require_once __DIR__ . '/../src/entity/imagen.class.php';
+require_once __DIR__ . '/../src/database/connection.class.php';
 
 $errores = [];
 $titulo = "";
@@ -20,7 +21,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $imagen->saveUploadFile(Imagen::RUTA_IMAGENES_SUBIDAS);
 
-        $mensaje = "Datos enviados";
+        $conexion = Connection::make();
+        $sql = "INSERT INTO imagenes (nombre, descripcion, categoria) VALUES (:nombre, :descripcion, :categoria)";
+        $pdoStatement = $conexion->prepare($sql);
+        
+        $parametros = [
+            ':nombre' => $imagen->getFileName(),
+            ':descripcion' => $descripcion,
+            ':categoria' => 1
+        ];
+
+        if ($pdoStatement->execute($parametros) === false) {
+            $errores[] = "No se ha podido guardar la imagen en la base de datos";
+        } else {
+            $mensaje = "Se ha guardado la imagen correctamente";
+            $descripcion = "";
+        }
+
     } catch (FileException $fileException) {
         $errores[] = $fileException->getMessage();
     }
