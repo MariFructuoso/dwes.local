@@ -1,13 +1,11 @@
 <?php
 class Imagen
 {
-    // Constantes de rutas definidas en el PDF
     const RUTA_IMAGENES_PORTFOLIO = '/public/images/index/portfolio/';
     const RUTA_IMAGENES_GALERIA = '/public/images/index/gallery/';
     const RUTA_IMAGENES_CLIENTES = '/public/images/clients/';
     const RUTA_IMAGENES_SUBIDAS = '/public/images/galeria/';
-
-    // Atributos privados
+    
     private $id;
     private $nombre;
     private $descripcion;
@@ -16,8 +14,7 @@ class Imagen
     private $numLikes;
     private $numDownloads;
 
-    // Constructor: id no se pasa. Los numéricos valen 0 por defecto.
-    public function __construct($nombre, $descripcion, $categoria = 0, $numVisualizaciones = 0, $numLikes = 0, $numDownloads = 0)
+    public function __construct($nombre = "", $descripcion = "", $categoria = 0, $numVisualizaciones = 0, $numLikes = 0, $numDownloads = 0)
     {
         $this->id = null;
         $this->nombre = $nombre;
@@ -27,9 +24,6 @@ class Imagen
         $this->numLikes = $numLikes;
         $this->numDownloads = $numDownloads;
     }
-
-    // GETTERS Y SETTERS
-    // (No se crea setId, y los setters devuelven el objeto Imagen)
 
     public function getId()
     {
@@ -120,6 +114,11 @@ class Imagen
     public function getUrlClientes()
     {
         return self::RUTA_IMAGENES_CLIENTES . $this->nombre;
+    }
+    
+    public function getUrlSubidas()
+    {
+        return self::RUTA_IMAGENES_SUBIDAS . $this->nombre;
     }
 }
 ?>

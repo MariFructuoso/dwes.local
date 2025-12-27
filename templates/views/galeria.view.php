@@ -14,13 +14,11 @@ require_once __DIR__ . '/../navegacion.part.php';
         </div>
     </div>
 </div>
-<!-- Principal Content Start -->
 <div id="galeria">
     <div class="container">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
             <h2>Subir imágenes:</h2>
             <hr>
-            <!-- Sección que muestra la confirmación del formulario o bien sus errores -->
             <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') : ?>
                 <div class="alert alert-<?= empty($errores) ? 'info' : 'danger'; ?> alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -37,8 +35,6 @@ require_once __DIR__ . '/../navegacion.part.php';
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
-            <!-- Formulario que permite subir una imagen con su descripción -->
-            <!--    Hay que indicar OBLIGATORIAMENTE enctype="multipart/form-data" para enviar ficheros al servidor -->
             <form class="form-horizontal" action="<?= $_SERVER['PHP_SELF']  ?>" method="post"
                 enctype="multipart/form-data">
                 <div class="form-group">
@@ -59,9 +55,37 @@ require_once __DIR__ . '/../navegacion.part.php';
             </form>
             <hr class="divider">
             <div class="imagenes_galeria">
-            </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Imagen</th>
+                            <th scope="col">Visualizaciones</th>
+                            <th scope="col">Likes</th>
+                            <th scope="col">Descargas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($imagenes as $imagen): ?>
+                            <tr>
+                                <th scope="row"><?= $imagen->getNombre() ?></th>
+                                <td>
+                                    <img src="<?= $imagen->getUrlSubidas() ?>"
+                                        alt="<?= $imagen->getDescripcion() ?>"
+                                        title="<?= $imagen->getDescripcion() ?>"
+                                        width="100px">
+                                </td>
+                                <td><?= $imagen->getNumVisualizaciones() ?></td>
+                                <td><?= $imagen->getNumLikes() ?></td>
+                                <td><?= $imagen->getNumDownloads() ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                </div>
         </div>
     </div>
 </div>
 <?php
-require_once __DIR__ . '/fin.part.php';
+require_once __DIR__ . '/../fin.part.php';
+?>
