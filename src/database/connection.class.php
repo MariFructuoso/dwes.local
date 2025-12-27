@@ -1,27 +1,28 @@
 <?php
+require_once __DIR__ . '/../core/App.php';
+
 class Connection
 {
+    /**
+     * @return PDO
+     * @throws AppException
+     */
     public static function make()
     {
         try {
-            $opciones = [
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_PERSISTENT => true
-            ];
+            $config = App::get('config')['database'];
             
             $connection = new PDO(
-                'mysql:host=localhost;dbname=cursophp;charset=utf8',
-                'usercurso', 
-                'php',       
-                $opciones
+                $config['connection'] . ';dbname=' . $config['name'],
+                $config['username'],
+                $config['password'],
+                $config['options']
             );
-            
-            return $connection;
-            
         } catch (PDOException $PDOException) {
-            die($PDOException->getMessage());
+            throw new AppException('No se ha podido crear la conexión a la base de datos');
         }
+
+        return $connection;
     }
 }
 ?>
