@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/../exceptions/QueryException.class.php';
+require_once __DIR__ . '/../exceptions/NotFoundException.php'; // Agregamos la nueva excepción
 require_once __DIR__ . '/../core/App.php'; 
 require_once __DIR__ . '/../entity/IEntity.php';
+
 abstract class QueryBuilder
 {
     private $connection;
@@ -15,17 +17,38 @@ abstract class QueryBuilder
         $this->classEntity = $classEntity;
     }
 
-    public function findAll(): array
+    private function executeQuery(string $sql): array
     {
-        $sql = "SELECT * FROM $this->table";
-        
         $pdoStatement = $this->connection->prepare($sql);
         
         if ($pdoStatement->execute() === false) {
             throw new QueryException("No se ha podido ejecutar la query solicitada.");
         }
         
+       
         return $pdoStatement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $this->classEntity);
+    }
+
+    
+    public function findAll(): array
+    {
+        $sql = "SELECT * FROM $this->table";
+        return $this->executeQuery($sql);
+    }
+
+   
+    public function find(int $id): IEntity
+    {
+        
+        $sql = "SELECT * FROM $this->table WHERE id=$id";
+        
+        $result = $this->executeQuery($sql);
+        
+        if (empty($result)) {
+            throw new NotFoundException("No se ha encontrado ningún elemento con id $id.");
+        }
+        
+        return $result[0]; 
     }
     public function save(IEntity $entity): void
     {

@@ -11,12 +11,12 @@ class Imagen implements IEntity
     private $id;
     private $nombre;
     private $descripcion;
-    private $categoria;
+    private $categoria; 
     private $numVisualizaciones;
     private $numLikes;
     private $numDownloads;
 
-    public function __construct($nombre = "", $descripcion = "", $categoria = 0, $numVisualizaciones = 0, $numLikes = 0, $numDownloads = 0)
+    public function __construct($nombre = "", $descripcion = "", $categoria = 1, $numVisualizaciones = 0, $numLikes = 0, $numDownloads = 0)
     {
         $this->id = null;
         $this->nombre = $nombre;
@@ -122,6 +122,7 @@ class Imagen implements IEntity
     {
         return self::RUTA_IMAGENES_SUBIDAS . $this->nombre;
     }
+
     public function toArray(): array
     {
         return [
