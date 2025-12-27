@@ -3,51 +3,59 @@ require_once __DIR__ . '/../src/utils/utils.class.php';
 require_once __DIR__ . '/../src/utils/file.class.php';
 require_once __DIR__ . '/../src/exceptions/FileException.class.php';
 require_once __DIR__ . '/../src/entity/asociado.class.php';
-require_once __DIR__ . '/../src/database/connection.class.php';
+require_once __DIR__ . '/../src/repository/AsociadosRepository.php';
+require_once __DIR__ . '/../src/core/App.php';
+require_once __DIR__ . '/../src/exceptions/AppException.class.php';
 
 $errores = [];
+$asociados = []; 
 $nombre = "";
 $descripcion = "";
 $mensaje = "";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+try {
+    $config = require_once __DIR__ . '/../app/config.php';
+    App::bind('config', $config);
 
-    $nombre = trim(htmlspecialchars($_POST['nombre']));
-    $descripcion = trim(htmlspecialchars($_POST['descripcion']));
+    $asociadosRepository = new AsociadosRepository();
 
-    if (empty($nombre)) {
-        $errores[] = "El nombre del asociado es obligatorio.";
-    }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    if (empty($errores)) {
-        try {
+        $nombre = trim(htmlspecialchars($_POST['nombre']));
+        $descripcion = trim(htmlspecialchars($_POST['descripcion']));
+
+        if (empty($nombre)) {
+            $errores[] = "El nombre del asociado es obligatorio.";
+        }
+
+        if (empty($errores)) {
+            
             $tiposAceptados = ['image/jpeg', 'image/gif', 'image/png'];
-
             $logo = new File('logo', $tiposAceptados);
 
             $logo->saveUploadFile(Asociado::RUTA_LOGOS_ASOCIADOS);
 
-            $conexion = Connection::make();
-            $sql = "INSERT INTO asociados (nombre, logo, descripcion) VALUES (:nombre, :logo, :descripcion)";
-            $pdoStatement = $conexion->prepare($sql);
-            $parametros = [
-                ':nombre' => $nombre,
-                ':logo' => $logo->getFileName(),
-                ':descripcion' => $descripcion
-            ];
+            $nuevoAsociado = new Asociado($nombre, $logo->getFileName(), $descripcion);
 
-            if ($pdoStatement->execute($parametros) === false) {
-                $errores[] = "No se ha podido guardar el asociado en la base de datos";
-            } else {
-                $nombre = "";
-                $descripcion = "";
-                $mensaje = "Se ha guardado el asociado correctamente";
-            }
+            $asociadosRepository->save($nuevoAsociado);
 
-        } catch (FileException $fileException) {
-            $errores[] = $fileException->getMessage();
+            $nombre = "";
+            $descripcion = "";
+            $mensaje = "Se ha guardado el asociado correctamente";
         }
     }
+
+    $asociados = $asociadosRepository->findAll();
+
+} catch (FileException $fileException) {
+    $errores[] = $fileException->getMessage();
+} catch (QueryException $queryException) {
+    $errores[] = $queryException->getMessage();
+} catch (AppException $appException) {
+    $errores[] = $appException->getMessage();
+} catch (PDOException $e) {
+    $errores[] = "Error de base de datos: " . $e->getMessage();
 }
 
 require_once __DIR__ . '/views/asociados.view.php';
+?>
