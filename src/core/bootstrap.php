@@ -7,5 +7,5 @@ $config = require __DIR__ . '/../../app/config.php';
 App::bind('config', $config); 
 
 $router = Router::load('app/routes.php');
-App::bind('router', $router);
+App::bind('router', $router); 
 ?>

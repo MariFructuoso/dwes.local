@@ -19,7 +19,12 @@ class Connection
                 $config['options']
             );
         } catch (PDOException $PDOException) {
-            throw new AppException('No se ha podido crear la conexión a la base de datos');
+            // --- CAMBIO PARA DEPURAR ---
+            // En lugar de lanzar una excepción genérica, imprimimos el error real y paramos.
+            die("ERROR REAL DE MYSQL: " . $PDOException->getMessage());
+        } catch (Exception $e) {
+            // Capturamos cualquier otro error (como fallos al leer $config)
+            die("OTRO ERROR: " . $e->getMessage());
         }
 
         return $connection;

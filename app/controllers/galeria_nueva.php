@@ -1,7 +1,11 @@
 <?php
 require_once __DIR__ . '/../../src/core/App.php';
 require_once __DIR__ . '/../../src/utils/file.class.php';
+require_once __DIR__ . '/../../src/entity/imagen.class.php'; 
 require_once __DIR__ . '/../../src/repository/ImagenesRepository.php';
+require_once __DIR__ . '/../../src/exceptions/FileException.class.php'; 
+require_once __DIR__ . '/../../src/exceptions/CategoriaException.php';
+require_once __DIR__ . '/../../src/exceptions/AppException.class.php';
 
 try {
     $imagenesRepository = new ImagenesRepository();

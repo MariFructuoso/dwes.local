@@ -34,4 +34,4 @@ class Router
     {
         header('location: /' . $path);
     }
-}
+} 
