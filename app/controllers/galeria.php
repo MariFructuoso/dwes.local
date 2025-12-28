@@ -1,14 +1,15 @@
 <?php
-require_once __DIR__ . '/../src/utils/utils.class.php';
-require_once __DIR__ . '/../src/utils/file.class.php';
-require_once __DIR__ . '/../src/exceptions/FileException.class.php';
-require_once __DIR__ . '/../src/entity/imagen.class.php';
-require_once __DIR__ . '/../src/database/QueryBuilder.class.php';
-require_once __DIR__ . '/../src/repository/ImagenesRepository.php';
-require_once __DIR__ . '/../src/repository/CategoriaRepository.php'; 
-require_once __DIR__ . '/../src/core/App.php';
-require_once __DIR__ . '/../src/exceptions/AppException.class.php';
-require_once __DIR__ . '/../src/exceptions/CategoriaException.php'; 
+// Ajustamos las rutas: de "../src" pasamos a "../../src"
+require_once __DIR__ . '/../../src/utils/utils.class.php';
+require_once __DIR__ . '/../../src/utils/file.class.php';
+require_once __DIR__ . '/../../src/exceptions/FileException.class.php';
+require_once __DIR__ . '/../../src/entity/imagen.class.php';
+require_once __DIR__ . '/../../src/database/QueryBuilder.class.php';
+require_once __DIR__ . '/../../src/repository/ImagenesRepository.php';
+require_once __DIR__ . '/../../src/repository/CategoriaRepository.php'; 
+require_once __DIR__ . '/../../src/core/App.php';
+require_once __DIR__ . '/../../src/exceptions/AppException.class.php';
+require_once __DIR__ . '/../../src/exceptions/CategoriaException.php'; 
 
 $errores = [];
 $imagenes = [];
@@ -17,10 +18,7 @@ $titulo = "";
 $descripcion = "";
 $mensaje = "";
 
-try {
-    $config = require_once __DIR__ . '/../app/config.php';
-    App::bind('config', $config);
-
+try { 
     $imagenesRepository = new ImagenesRepository();
     
     $categoriaRepository = new CategoriaRepository();
@@ -30,9 +28,7 @@ try {
         $titulo = trim(htmlspecialchars($_POST['titulo']));
         $descripcion = trim(htmlspecialchars($_POST['descripcion']));
         
-       
         $categoria = trim(htmlspecialchars($_POST['categoria']));
-        
         
         if (empty($categoria)) {
             throw new CategoriaException();
@@ -43,7 +39,6 @@ try {
         $imagen = new File('imagen', $tiposAceptados);
         $imagen->saveUploadFile(Imagen::RUTA_IMAGENES_SUBIDAS);
         
-     
         $imagenGaleria = new Imagen($imagen->getFileName(), $descripcion, $categoria);
         
         $imagenesRepository->save($imagenGaleria);
@@ -67,5 +62,5 @@ try {
     $errores[] = "Error: " . $e->getMessage();
 }
 
-require_once 'views/galeria.view.php';
+require_once __DIR__ . '/../views/galeria.view.php';
 ?>

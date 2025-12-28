@@ -1,5 +1,5 @@
-<?php require_once __DIR__ . '/../../templates/inicio.part.php'; ?>
-<?php require_once __DIR__ . '/../../templates/navegacion.part.php'; ?>
+<?php require_once __DIR__ . '/inicio.part.php'; ?>
+<?php require_once __DIR__ . '/navegacion.part.php'; ?>
 
 <div class="hero hero-inner">
     <div class="container">
@@ -66,4 +66,4 @@
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../templates/fin.part.php'; ?>
+<?php require_once __DIR__ . '/fin.part.php'; ?>

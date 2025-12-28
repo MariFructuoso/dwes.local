@@ -1,8 +1,8 @@
 <?php
 /** @var array $imagenesHome */ // <--- AÑADE ESTA LÍNEA
-require_once __DIR__ . '/../../templates/inicio.part.php'; 
+require_once __DIR__ . '/inicio.part.php'; 
 ?>
-<?php require_once __DIR__ . '/../../templates/navegacion.part.php'; ?>
+<?php require_once __DIR__ . '/navegacion.part.php'; ?>
 
 <div id="index">
 
@@ -39,18 +39,18 @@ require_once __DIR__ . '/../../templates/inicio.part.php';
             <?php 
                 $idCategoria = 1;         
                 shuffle($imagenesHome);   
-                require __DIR__ . '/../imagen-index.part.php'; 
+                require __DIR__ . '/imagen-index.part.php'; 
             ?>
             <?php 
                 $idCategoria = 2;         
                 shuffle($imagenesHome);   
-                require __DIR__ . '/../imagen-index.part.php'; 
+                require __DIR__ . '/imagen-index.part.php'; 
             ?>
 
             <?php 
                 $idCategoria = 3;         
                 shuffle($imagenesHome);   
-                require __DIR__ . '/../imagen-index.part.php'; 
+                require __DIR__ . '/imagen-index.part.php'; 
             ?>
 
         </div>
@@ -70,9 +70,7 @@ require_once __DIR__ . '/../../templates/inicio.part.php';
         </form>
     </div>
     
-    <?php require_once __DIR__ . '/../indexlogos.view.part.php'; ?>
+    <?php require_once __DIR__ . '/indexlogos.view.part.php'; ?>
 
-</div><?php require_once __DIR__ . '/../../templates/fin.part.php'; ?>
+</div><?php require_once __DIR__ . '/fin.part.php'; ?>
     
-
-</div><?php require_once __DIR__ . '/../../templates/fin.part.php'; ?>

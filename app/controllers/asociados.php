@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . '/../src/utils/utils.class.php';
-require_once __DIR__ . '/../src/utils/file.class.php';
-require_once __DIR__ . '/../src/exceptions/FileException.class.php';
-require_once __DIR__ . '/../src/entity/asociado.class.php';
-require_once __DIR__ . '/../src/repository/AsociadosRepository.php';
-require_once __DIR__ . '/../src/core/App.php';
-require_once __DIR__ . '/../src/exceptions/AppException.class.php';
+require_once __DIR__ . '/../../src/utils/utils.class.php';
+require_once __DIR__ . '/../../src/utils/file.class.php';
+require_once __DIR__ . '/../../src/exceptions/FileException.class.php';
+require_once __DIR__ . '/../../src/entity/asociado.class.php';
+require_once __DIR__ . '/../../src/repository/AsociadosRepository.php';
+require_once __DIR__ . '/../../src/core/App.php';
+require_once __DIR__ . '/../../src/exceptions/AppException.class.php';
 
 $errores = [];
 $asociados = []; 
@@ -14,7 +14,7 @@ $descripcion = "";
 $mensaje = "";
 
 try {
-    $config = require_once __DIR__ . '/../app/config.php';
+    $config = require __DIR__ . '/../config.php';
     App::bind('config', $config);
 
     $asociadosRepository = new AsociadosRepository();
@@ -57,5 +57,5 @@ try {
     $errores[] = "Error de base de datos: " . $e->getMessage();
 }
 
-require_once __DIR__ . '/views/asociados.view.php';
+require_once __DIR__ . '/../views/asociados.view.php';
 ?>

@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../src/entity/imagen.class.php';
-require_once __DIR__ . '/../src/entity/asociado.class.php'; // <--- AÑADIDO
-require_once __DIR__ . '/../src/utils/utils.class.php';     // <--- AÑADIDO
+require_once __DIR__ . '/../../src/entity/imagen.class.php';
+require_once __DIR__ . '/../../src/entity/asociado.class.php';
+require_once __DIR__ . '/../../src/utils/utils.class.php';
 
 $imagenesHome = [];
 for ($i = 1; $i <= 12; $i++) {
@@ -15,5 +15,5 @@ $asociados[] = new Asociado('Third Partner Name', 'log3.jpg', 'Descripción del 
 
 $asociados = Utils::extraeElementosAleatorios($asociados, 3);
 
-require_once __DIR__ . '/views/index.view.php';
+require_once __DIR__ . '/../views/index.view.php';
 ?>

@@ -1,5 +1,5 @@
-<?php require_once __DIR__ . '/../../templates/inicio.part.php'; ?>
-<?php require_once __DIR__ . '/../../templates/navegacion.part.php'; ?>
+<?php require_once __DIR__ . '/inicio.part.php'; ?>
+<?php require_once __DIR__ . '/navegacion.part.php'; ?>
 
 
 <!-- Principal Content Start -->
@@ -150,4 +150,4 @@
 <!-- End of Principal Content Start --> 
 
 <!-- Footer -->
-  <?php require_once __DIR__ . '/../../templates/fin.part.php'; ?>
+<?php require_once __DIR__ . '/fin.part.php'; ?>

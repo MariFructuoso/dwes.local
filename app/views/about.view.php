@@ -1,5 +1,5 @@
-<?php require_once __DIR__ . '/../../templates/inicio.part.php'; ?>
-<?php require_once __DIR__ . '/../../templates/navegacion.part.php'; ?>
+<?php require_once __DIR__ . '/inicio.part.php'; ?>
+<?php require_once __DIR__ . '/navegacion.part.php'; ?>
 
 
 <!-- Principal Content Start-->
@@ -124,7 +124,7 @@
            <h3>CLIENTS FEEDBACK</h3>
            <hr>
            
-           <?php require_once __DIR__ . '/../../templates/imagen-cliente.part.php'; ?>
+           <?php require_once __DIR__ . '/imagen-cliente.part.php'; ?>
         </div>
         </div>
       <!-- End of Clients Feedback --> 
@@ -133,5 +133,5 @@
     <!-- End of container Box -->  
    </div>
 <!-- End of principal content -->
-<?php require_once __DIR__ . '/../../templates/fin.part.php'; ?>
+<?php require_once __DIR__ . '/fin.part.php'; ?>
   
