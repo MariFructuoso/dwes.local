@@ -25,6 +25,7 @@ try {
     
     $imagenGaleria = new Imagen($imagen->getFileName(), $descripcion, $categoria);
     $imagenesRepository->save($imagenGaleria);
+    App::get('logger')->add("Se ha guardado una imagen: " . $imagenGaleria->getNombre());
 
     App::get('router')->redirect('galeria');
 
