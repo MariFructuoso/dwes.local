@@ -24,30 +24,6 @@ try {
     $categoriaRepository = new CategoriaRepository();
     $categorias = $categoriaRepository->findAll();
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $titulo = trim(htmlspecialchars($_POST['titulo']));
-        $descripcion = trim(htmlspecialchars($_POST['descripcion']));
-        
-        $categoria = trim(htmlspecialchars($_POST['categoria']));
-        
-        if (empty($categoria)) {
-            throw new CategoriaException();
-        }
-
-        $tiposAceptados = ['image/jpeg', 'image/gif', 'image/png'];
-        
-        $imagen = new File('imagen', $tiposAceptados);
-        $imagen->saveUploadFile(Imagen::RUTA_IMAGENES_SUBIDAS);
-        
-        $imagenGaleria = new Imagen($imagen->getFileName(), $descripcion, $categoria);
-        
-        $imagenesRepository->save($imagenGaleria);
-
-        $mensaje = "Se ha guardado la imagen correctamente";
-        $titulo = "";
-        $descripcion = "";
-    }
-
     $imagenes = $imagenesRepository->findAll();
 
 } catch (FileException $fileException) {

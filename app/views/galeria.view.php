@@ -35,8 +35,7 @@ require_once __DIR__ . '/navegacion.part.php';
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
-            <form class="form-horizontal" action="<?= $_SERVER['PHP_SELF']  ?>" method="post"
-                enctype="multipart/form-data">
+            <form class="form-horizontal" action="/galeria/nueva" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <div class="col-xs-12">
                         <label class="label-control">Imagen</label>

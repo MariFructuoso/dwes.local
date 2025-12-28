@@ -1,5 +1,9 @@
 <?php
-require_once 'src/core/bootstrap.php'; 
-$routes = require 'app/routes.php'; 
-$uri = trim($_SERVER['REQUEST_URI'], '/'); 
-require $routes[$uri];
+require_once 'src/core/bootstrap.php';
+
+try {
+    require Router::load('app/routes.php')
+        ->direct(Request::uri(), Request::method());
+} catch (Exception $e) {
+    die($e->getMessage());
+}
