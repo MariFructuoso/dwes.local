@@ -1,8 +1,12 @@
 <?php
-require_once __DIR__ . '/../exceptions/QueryException.class.php';
-require_once __DIR__ . '/../exceptions/NotFoundException.php'; // Agregamos la nueva excepción
-require_once __DIR__ . '/../core/App.php'; 
-require_once __DIR__ . '/../entity/IEntity.php';
+namespace dwes\core\database;
+
+use PDO;
+use dwes\core\App;
+use PDOException;
+use dwes\app\entity\IEntity;
+use dwes\app\exceptions\QueryException; 
+use dwes\app\exceptions\NotFoundException;
 
 abstract class QueryBuilder
 {
@@ -25,21 +29,17 @@ abstract class QueryBuilder
             throw new QueryException("No se ha podido ejecutar la query solicitada.");
         }
         
-       
         return $pdoStatement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $this->classEntity);
     }
 
-    
     public function findAll(): array
     {
         $sql = "SELECT * FROM $this->table";
         return $this->executeQuery($sql);
     }
 
-   
     public function find(int $id): IEntity
     {
-        
         $sql = "SELECT * FROM $this->table WHERE id=$id";
         
         $result = $this->executeQuery($sql);
@@ -50,6 +50,7 @@ abstract class QueryBuilder
         
         return $result[0]; 
     }
+
     public function save(IEntity $entity): void
     {
         try {

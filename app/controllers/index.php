@@ -1,7 +1,9 @@
 <?php
-require_once __DIR__ . '/../../src/entity/imagen.class.php';
-require_once __DIR__ . '/../../src/entity/asociado.class.php';
-require_once __DIR__ . '/../../src/utils/utils.class.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use dwes\app\entity\Imagen;
+use dwes\app\entity\Asociado;
+use dwes\app\utils\Utils;
 
 $imagenesHome = [];
 for ($i = 1; $i <= 12; $i++) {

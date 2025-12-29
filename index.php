@@ -1,10 +1,15 @@
 <?php
+require_once 'vendor/autoload.php';
+require_once 'core/bootstrap.php'; 
+
+use dwes\core\Router;
+use dwes\core\Request;
+use dwes\app\exceptions\NotFoundException;
+
 try {
-    require_once 'src/core/bootstrap.php';
-
-    require Router::load('app/routes.php')
+    Router::load('app/routes.php')
         ->direct(Request::uri(), Request::method());
-} catch (Exception $e) {
-    die($e->getMessage());
-} 
 
+} catch (NotFoundException $notFoundException) {
+    die($notFoundException->getMessage());
+}

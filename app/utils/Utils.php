@@ -1,8 +1,16 @@
 <?php
+namespace dwes\app\utils;
+
 class Utils {
+    
     public static function esOpcionMenuActiva($opcion) {
         $actual = explode('/', $_SERVER['REQUEST_URI']);
-        $actual = '/' . $actual[count($actual) - 1];
+        $actual = '/' . end($actual); 
+        
+        if(strpos($actual, '?') !== false){
+            $actual = substr($actual, 0, strpos($actual, '?'));
+        }
+
         if ($actual === $opcion) {
             return true;
         } else {
@@ -21,11 +29,8 @@ class Utils {
             return null;
         } else {
             shuffle($lista);
-            // Obtenemos un array de fragmentos de tamaño cantidad
             $listaNueva = array_chunk($lista, $cantidad);
-            // Devolvemos el primer fragmento del array
             return $listaNueva[0]; 
         }
     }
 }
-?>

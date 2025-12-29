@@ -1,4 +1,6 @@
 <?php
+namespace dwes\core;
+
 class Request
 {
     public static function uri()
@@ -11,3 +13,4 @@ class Request
         return $_SERVER['REQUEST_METHOD'];
     } 
 }
+?>

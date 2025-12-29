@@ -1,6 +1,7 @@
 <?php
-// Añadimos el require hacia FileException [cite: 261]
-require_once __DIR__ . '/../exceptions/FileException.class.php';
+namespace dwes\app\utils;
+
+use dwes\app\exceptions\FileException;
 
 class File
 {
@@ -14,12 +15,11 @@ class File
      */
     public function __construct(string $fileName, array $arrTypes)
     {
-        $this->file = $_FILES[$fileName]; 
+        $this->file = $_FILES[$fileName] ?? null; 
         $this->fileName = "";
 
         if (!isset($this->file)) 
         {
-            // [cite: 264]
             throw new FileException('Debes seleccionar un fichero');
         }
 
@@ -39,7 +39,6 @@ class File
         }
 
         if (in_array($this->file['type'], $arrTypes) === false) {
-            // [cite: 272]
             throw new FileException('Tipo de fichero no soportado');
         }
     }
@@ -51,7 +50,6 @@ class File
      */
     public function saveUploadFile(string $rutaDestino)
     {
-        // Primero hay que comprobar que el fichero se ha subido desde el formulario.
         if (is_uploaded_file($this->file['tmp_name']) === false) {
             throw new FileException('El archivo no ha sido subido mediante un formulario.');
         }
@@ -59,9 +57,7 @@ class File
         $this->fileName = $this->file['name'];
         $ruta = $rutaDestino . $this->fileName;
 
-        // Comprobamos si ya existe el fichero
         if (is_file($_SERVER['DOCUMENT_ROOT'] . $ruta) === true) {
-            // Generamos un nombre aleatorio
             $idUnico = time();
             $this->fileName = $idUnico . "_" . $this->fileName;
             $ruta = $rutaDestino . $this->fileName;
@@ -77,4 +73,3 @@ class File
         return $this->fileName;
     }
 }
-?>

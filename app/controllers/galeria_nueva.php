@@ -1,11 +1,16 @@
 <?php
-require_once __DIR__ . '/../../src/core/App.php';
-require_once __DIR__ . '/../../src/utils/file.class.php';
-require_once __DIR__ . '/../../src/entity/imagen.class.php'; 
-require_once __DIR__ . '/../../src/repository/ImagenesRepository.php';
-require_once __DIR__ . '/../../src/exceptions/FileException.class.php'; 
-require_once __DIR__ . '/../../src/exceptions/CategoriaException.php';
-require_once __DIR__ . '/../../src/exceptions/AppException.class.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use dwes\core\App;
+use dwes\app\utils\File;
+use dwes\app\entity\Imagen;
+use dwes\app\repository\ImagenesRepository;
+use dwes\app\exceptions\FileException;
+use dwes\app\exceptions\QueryException;
+use dwes\app\exceptions\AppException;
+use dwes\app\exceptions\CategoriaException;
+
+$errores = [];
 
 try {
     $imagenesRepository = new ImagenesRepository();
@@ -17,6 +22,8 @@ try {
     $imagen = new File('imagen', $tiposAceptados); 
 
     $categoria = trim(htmlspecialchars($_POST['categoria']));
+    
+    // Validación básica de categoría
     if (empty($categoria)) {
         throw new CategoriaException; 
     }
@@ -25,6 +32,7 @@ try {
     
     $imagenGaleria = new Imagen($imagen->getFileName(), $descripcion, $categoria);
     $imagenesRepository->save($imagenGaleria);
+    
     App::get('logger')->add("Se ha guardado una imagen: " . $imagenGaleria->getNombre());
 
     App::get('router')->redirect('galeria');
@@ -38,8 +46,8 @@ try {
 } catch (CategoriaException $e) {
     $errores[] = "No se ha seleccionado una categoría válida";
 }
+
 if (!empty($errores)) {
-    // Opción rápida para ver el error: imprimirlo y detener
     echo "<div class='alert alert-danger'><ul>";
     foreach ($errores as $error) {
         echo "<li>" . $error . "</li>";

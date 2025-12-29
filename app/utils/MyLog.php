@@ -1,8 +1,9 @@
 <?php
+namespace dwes\app\utils;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Monolog\Level;
+use Monolog\Level; 
 
 class MyLog
 {
@@ -10,7 +11,6 @@ class MyLog
      * @var \Monolog\Logger
      */
     private $log;
-
 
     private function __construct(string $filename)
     {

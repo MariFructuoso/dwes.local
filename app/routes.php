@@ -10,6 +10,7 @@ $router->get('post', 'app/controllers/single_post.php');
 
 // Rutas POST (guardar datos)
 $router->post('galeria/nueva', 'app/controllers/galeria_nueva.php'); 
+$router->post('asociados', 'app/controllers/asociados.php');
 
 // PARCHE XAMPP 
 $router->get('index.php', 'app/controllers/index.php');

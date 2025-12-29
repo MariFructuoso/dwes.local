@@ -1,15 +1,13 @@
 <?php
-// Ajustamos las rutas: de "../src" pasamos a "../../src"
-require_once __DIR__ . '/../../src/utils/utils.class.php';
-require_once __DIR__ . '/../../src/utils/file.class.php';
-require_once __DIR__ . '/../../src/exceptions/FileException.class.php';
-require_once __DIR__ . '/../../src/entity/imagen.class.php';
-require_once __DIR__ . '/../../src/database/QueryBuilder.class.php';
-require_once __DIR__ . '/../../src/repository/ImagenesRepository.php';
-require_once __DIR__ . '/../../src/repository/CategoriaRepository.php'; 
-require_once __DIR__ . '/../../src/core/App.php';
-require_once __DIR__ . '/../../src/exceptions/AppException.class.php';
-require_once __DIR__ . '/../../src/exceptions/CategoriaException.php'; 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use dwes\app\repository\ImagenesRepository;
+use dwes\app\repository\CategoriaRepository;
+use dwes\app\exceptions\FileException;
+use dwes\app\exceptions\AppException;
+use dwes\app\exceptions\CategoriaException;
+use dwes\app\exceptions\QueryException; 
+use PDOException;
 
 $errores = [];
 $imagenes = [];

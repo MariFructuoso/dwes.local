@@ -1,11 +1,16 @@
 <?php
-require_once __DIR__ . '/../core/App.php';
+namespace dwes\core\database;
+
+use PDO;
+use PDOException;
+use Exception;
+use dwes\core\App; 
 
 class Connection
 {
     /**
      * @return PDO
-     * @throws AppException
+     * @throws Exception
      */
     public static function make()
     {
@@ -19,11 +24,8 @@ class Connection
                 $config['options']
             );
         } catch (PDOException $PDOException) {
-            // --- CAMBIO PARA DEPURAR ---
-            // En lugar de lanzar una excepción genérica, imprimimos el error real y paramos.
             die("ERROR REAL DE MYSQL: " . $PDOException->getMessage());
         } catch (Exception $e) {
-            // Capturamos cualquier otro error (como fallos al leer $config)
             die("OTRO ERROR: " . $e->getMessage());
         }
 

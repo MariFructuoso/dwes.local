@@ -1,29 +1,18 @@
 <?php
-require_once __DIR__ . '/../exceptions/AppException.class.php';
-require_once __DIR__ . '/../database/connection.class.php'; // Ajustado para que coincida con tu archivo
+namespace dwes\core; // <--- Namespace Core
+
+use dwes\app\exceptions\AppException;
+use dwes\core\database\Connection;
 
 class App
 {
-    /**
-     * @var array
-     */
     private static $container = [];
 
-    /**
-     * @param string $key
-     * @param $value
-     * @return void
-     */
     public static function bind(string $key, $value)
     {
         static::$container[$key] = $value;
     }
 
-    /**
-     * @param string $key
-     * @return mixed
-     * @throws AppException
-     */
     public static function get(string $key)
     {
         if (!array_key_exists($key, static::$container))
@@ -32,9 +21,6 @@ class App
         return static::$container[$key];
     }
 
-    /**
-     * @return PDO
-     */
     public static function getConnection()
     {
         if (!array_key_exists('connection', static::$container))

@@ -1,4 +1,8 @@
 <?php
+namespace dwes\core;
+
+use Exception;
+
 class Router
 {
     private $routes = [
@@ -30,8 +34,10 @@ class Router
         }
         throw new Exception("No se ha definido una ruta para la uri solicitada");
     }
+
     public function redirect(string $path)
     {
         header('location: /' . $path);
     }
-} 
+}
+?>
