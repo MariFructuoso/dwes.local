@@ -3,6 +3,7 @@ namespace dwes\core; // <--- Namespace Core
 
 use dwes\app\exceptions\AppException;
 use dwes\core\database\Connection;
+use dwes\core\database\QueryBuilder;
 
 class App
 {
@@ -28,5 +29,12 @@ class App
 
         return static::$container['connection'];
     }
+    public static function getRepository(string $className): QueryBuilder
+{
+    if (! array_key_exists($className, static::$container)) {
+        static::$container[$className] = new $className();
+    }
+    return static::$container[$className];
+}
 }
 ?>

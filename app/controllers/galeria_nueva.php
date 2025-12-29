@@ -13,7 +13,7 @@ use dwes\app\exceptions\CategoriaException;
 $errores = [];
 
 try {
-    $imagenesRepository = new ImagenesRepository();
+    $imagenesRepository = App::getRepository(ImagenesRepository::class);
 
     $titulo = trim(htmlspecialchars($_POST['titulo'] ?? ''));
     $descripcion = trim(htmlspecialchars($_POST['descripcion']));

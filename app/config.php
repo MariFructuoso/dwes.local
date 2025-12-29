@@ -10,5 +10,12 @@ return [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_PERSISTENT => true
         ]
+    ],
+    'logs' => [
+        'filename' => 'curso.log',
+        'level' => \Monolog\Level::Info
+    ],
+    'routes' => [
+        'filename' => 'routes.php'
     ]
 ];

@@ -8,10 +8,9 @@ use dwes\app\repository\AsociadosRepository;
 use dwes\app\exceptions\FileException;
 use dwes\app\exceptions\QueryException;
 use dwes\app\exceptions\AppException;
-use PDOException;
 
 $errores = [];
-$asociados = []; 
+$asociados = [];
 $nombre = "";
 $descripcion = "";
 $mensaje = "";
@@ -20,7 +19,7 @@ try {
     $config = require __DIR__ . '/../config.php';
     App::bind('config', $config);
 
-    $asociadosRepository = new AsociadosRepository();
+    $asociadosRepository = App::getRepository(AsociadosRepository::class);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -32,7 +31,7 @@ try {
         }
 
         if (empty($errores)) {
-            
+
             $tiposAceptados = ['image/jpeg', 'image/gif', 'image/png'];
             $logo = new File('logo', $tiposAceptados);
 
@@ -49,7 +48,6 @@ try {
     }
 
     $asociados = $asociadosRepository->findAll();
-
 } catch (FileException $fileException) {
     $errores[] = $fileException->getMessage();
 } catch (QueryException $queryException) {
@@ -61,4 +59,3 @@ try {
 }
 
 require_once __DIR__ . '/../views/asociados.view.php';
-?>

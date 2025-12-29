@@ -1,13 +1,13 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+use dwes\core\App;
 use dwes\app\repository\ImagenesRepository;
 use dwes\app\repository\CategoriaRepository;
 use dwes\app\exceptions\FileException;
 use dwes\app\exceptions\AppException;
 use dwes\app\exceptions\CategoriaException;
 use dwes\app\exceptions\QueryException; 
-use PDOException;
 
 $errores = [];
 $imagenes = [];
@@ -17,11 +17,9 @@ $descripcion = "";
 $mensaje = "";
 
 try { 
-    $imagenesRepository = new ImagenesRepository();
-    
-    $categoriaRepository = new CategoriaRepository();
+    $imagenesRepository = App::getRepository(ImagenesRepository::class);
+    $categoriaRepository = App::getRepository(CategoriaRepository::class);
     $categorias = $categoriaRepository->findAll();
-
     $imagenes = $imagenesRepository->findAll();
 
 } catch (FileException $fileException) {
