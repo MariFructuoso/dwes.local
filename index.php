@@ -7,8 +7,7 @@ use dwes\core\Request;
 use dwes\app\exceptions\NotFoundException;
 
 try {
-    require App::get('router')->direct(Request::uri(), Request::method());
-    
+    App::get('router')->direct(Request::uri(), Request::method());
 } catch (NotFoundException $notFoundException) {
     die($notFoundException->getMessage());
 } catch (Exception $e) {

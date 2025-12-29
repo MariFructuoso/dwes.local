@@ -1,8 +1,6 @@
 <?php
-/** @var array $imagenesHome */ // <--- AÑADE ESTA LÍNEA
-require_once __DIR__ . '/inicio.part.php'; 
+/** @var array $imagenesHome */ 
 ?>
-<?php require_once __DIR__ . '/navegacion.part.php'; ?>
 
 <div id="index">
 
@@ -35,7 +33,6 @@ require_once __DIR__ . '/inicio.part.php';
         </div>
 
         <div class="tab-content">
-
             <?php 
                 $idCategoria = 1;         
                 shuffle($imagenesHome);   
@@ -46,31 +43,27 @@ require_once __DIR__ . '/inicio.part.php';
                 shuffle($imagenesHome);   
                 require __DIR__ . '/imagen-index.part.php'; 
             ?>
-
             <?php 
                 $idCategoria = 3;         
                 shuffle($imagenesHome);   
                 require __DIR__ . '/imagen-index.part.php'; 
             ?>
-
         </div>
-        </div><div class="index-form text-center">
-        <h3>SUSCRIBE TO OUR NEWSLETTER </h3>
-        <h5>Suscribe to receive our News and Gifts</h5>
-        <form class="form-horizontal">
+    </div>
+
+    <div class="index-form text-center">
+        <h3>SUBSCRIBE TO OUR NEWSLETTER </h3>
+        <h5>Subscribe to receive our News and Gifts</h5>
+        <form class="form-horizontal" action="#" method="POST">
             <div class="form-group">
                 <div class="col-xs-12 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
-                    <input class="form-control" type="text" placeholder="Type here your email address">
-                    <a href="" class="btn btn-lg sr-button">SUBSCRIBE</a>
+                    <input class="form-control" type="text" name="email" placeholder="Type here your email address">
+                    <button type="submit" class="btn btn-lg sr-button" style="margin-top: 10px;">SUBSCRIBE</button>
                 </div>
             </div>
-        </form>
-    </div>
-    <div class="index-form text-center">
         </form>
     </div>
     
     <?php require_once __DIR__ . '/indexlogos.view.part.php'; ?>
 
-</div><?php require_once __DIR__ . '/fin.part.php'; ?>
-    
+</div>

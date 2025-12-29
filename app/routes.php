@@ -1,16 +1,20 @@
 <?php
 // Rutas GET (lectura)
-$router->get('', 'app/controllers/index.php');
-$router->get('about', 'app/controllers/about.php');
+
+// 1. Rutas que ahora gestiona el PagesController (Según paso 2 del PDF)
+$router->get('', 'PagesController@index');
+$router->get('about', 'PagesController@about');
+$router->get('blog', 'PagesController@blog');
+$router->get('post', 'PagesController@post');
+
+// 2. Rutas que siguen funcionando con archivos "antiguos" (hasta próximos pasos)
 $router->get('asociados', 'app/controllers/asociados.php');
-$router->get('blog', 'app/controllers/blog.php');
 $router->get('contact', 'app/controllers/contact.php');
 $router->get('galeria', 'app/controllers/galeria.php');
-$router->get('post', 'app/controllers/single_post.php');
 
 // Rutas POST (guardar datos)
 $router->post('galeria/nueva', 'app/controllers/galeria_nueva.php'); 
 $router->post('asociados', 'app/controllers/asociados.php');
 
 // PARCHE XAMPP 
-$router->get('index.php', 'app/controllers/index.php');
+$router->get('index.php', 'PagesController@index'); // Actualizado también para usar el controlador

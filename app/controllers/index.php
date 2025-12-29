@@ -17,5 +17,7 @@ $asociados[] = new Asociado('Third Partner Name', 'log3.jpg', 'Descripción del 
 
 $asociados = Utils::extraeElementosAleatorios($asociados, 3);
 
-require_once __DIR__ . '/../views/index.view.php';
+$vistaPrincipal = __DIR__ . '/../views/index.view.php';
+
+require __DIR__ . '/../views/layout.view.php';
 ?>
