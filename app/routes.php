@@ -12,11 +12,12 @@ $router->get('login', 'AuthController@login');
 $router->post('check-login', 'AuthController@checkLogin');
 $router->get('logout', 'AuthController@logout');
 
-// Rutas Protegidas - Solo usuarios registrados (ROLE_USER o ROLE_ADMIN) [cite: 252, 265]
 $router->get('galeria', 'GaleriaController@index', 'ROLE_USER');
 $router->get('galeria/:id', 'GaleriaController@show', 'ROLE_USER');
 $router->get('asociados', 'AsociadosController@index', 'ROLE_USER');
 
-// Rutas Restringidas - Solo Administradores (ROLE_ADMIN) [cite: 250, 267]
 $router->post('galeria/nueva', 'GaleriaController@nueva', 'ROLE_ADMIN');
 $router->post('asociados', 'AsociadosController@index', 'ROLE_ADMIN');
+
+$router->get('registro', 'AuthController@registro');
+$router->post('check-registro', 'AuthController@checkRegistro');

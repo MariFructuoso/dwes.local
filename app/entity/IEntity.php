@@ -5,5 +5,6 @@ interface IEntity
 {
     public function getId();
     public function toArray(): array;
+    public function getPassword();
 }
 ?>
