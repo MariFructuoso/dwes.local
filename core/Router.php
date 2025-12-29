@@ -27,7 +27,6 @@ class Router
     {
         $this->routes['POST'][$uri] = $controller;
     }
-
     /**
      * Procesa la URI y decide qué controlador ejecutar.
      * Soporta rutas con parámetros (ej: galeria/:id)
