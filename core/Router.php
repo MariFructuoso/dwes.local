@@ -30,6 +30,7 @@ class Router
     public function direct(string $uri, string $method): string
     {
         if (array_key_exists($uri, $this->routes[$method])) {
+            require $this->routes[$method][$uri];
             return $this->routes[$method][$uri];
         }
         throw new Exception("No se ha definido una ruta para la uri solicitada");
