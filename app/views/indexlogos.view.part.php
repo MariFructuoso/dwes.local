@@ -8,7 +8,7 @@
             <h4>Our Main Partners</h4>
             <hr>
             <div class="text-muted text-left">
-                <?php foreach ($asociados as $partner): ?>
+                <?php foreach ($asociadosLista as $partner): ?>
                     <ul class="list-inline">
                         <li><img src="<?= $partner->getUrl() ?>" alt="<?= $partner->getDescripcion() ?>"></li>
                         <li><?= $partner->getNombre() ?></li>

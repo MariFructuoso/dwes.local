@@ -11,11 +11,15 @@ class PagesController
     public function index()
     {
         $imagenesHome = [];
-        $imagenesHome[] = new Imagen('1.jpg', 'descripción imagen 1', 1, 456, 610, 140);
-        $imagenesHome[] = new Imagen('2.jpg', 'descripción imagen 2', 1, 56, 650, 136);
+        for ($i = 1; $i <= 12; $i++) {
+            $imagenesHome[] = new Imagen($i . '.jpg', 'descripción imagen ' . $i, 1, 456, 610, 130);
+        }
 
         $asociadosLista = [];
+        $asociadosLista = [];
         $asociadosLista[] = new Asociado("PhotoStyle, S.L.", "log1.jpg", "First Partner Photo Style");
+        $asociadosLista[] = new Asociado("Second Partner Name", "log2.jpg", "Descripción del logo 2");
+        $asociadosLista[] = new Asociado("Third Partner Name", "log3.jpg", "Descripción del logo 3");
 
         return Response::renderView(
             'index',
