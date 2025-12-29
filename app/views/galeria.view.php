@@ -17,22 +17,7 @@
             <h2>Subir imágenes:</h2>
             <hr>
             
-            <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') : ?>
-                <div class="alert alert-<?= empty($errores) ? 'info' : 'danger'; ?> alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">x</span>
-                    </button>
-                    <?php if (empty($errores)) : ?>
-                        <p><?= $mensaje ?></p>
-                    <?php else : ?>
-                        <ul>
-                            <?php foreach ($errores as $error) : ?>
-                                <li><?= $error ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
+            <?php include __DIR__ . '/show-error.part.view.php'; ?>
 
             <form class="form-horizontal" action="/galeria/nueva" method="post" enctype="multipart/form-data">
                 <div class="form-group">
@@ -46,7 +31,8 @@
                         <label class="label-control">Categoria</label>
                         <select class="form-control" name="categoria">
                             <?php foreach ($categorias as $categoria): ?>
-                                <option value="<?= $categoria->getId() ?>">
+                                <option value="<?= $categoria->getId() ?>"
+                                    <?= ($categoriaSeleccionada == $categoria->getId()) ? 'selected' : '' ?> >
                                     <?= $categoria->getNombre() ?>
                                 </option>
                             <?php endforeach; ?>
@@ -82,10 +68,12 @@
                             <tr>
                                 <th scope="row"><?= $imagen->getNombre() ?></th>
                                 <td>
-                                    <img src="<?= $imagen->getUrlSubidas() ?>"
-                                         alt="<?= $imagen->getDescripcion() ?>"
-                                         title="<?= $imagen->getDescripcion() ?>"
-                                         width="100px">
+                                    <a href="/galeria/<?= $imagen->getId() ?>">
+                                        <img src="<?= $imagen->getUrlSubidas() ?>"
+                                            alt="<?= $imagen->getDescripcion() ?>"
+                                            title="<?= $imagen->getDescripcion() ?>"
+                                            width="100px">
+                                    </a>
                                 </td>
                                 <td><?= $imagenesRepository->getCategoria($imagen)->getNombre() ?></td>
                                 

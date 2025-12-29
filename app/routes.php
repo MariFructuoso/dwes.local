@@ -20,3 +20,7 @@ $router->post('asociados', 'AsociadosController@index');
 $router->get('index.php', 'PagesController@index');
 
 $router->get ('galeria/:id', 'GaleriaController@show');
+
+$router->get('login', 'AuthController@login');
+$router->post('check-login', 'AuthController@checkLogin');
+$router->get('logout', 'AuthController@logout');

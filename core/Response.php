@@ -6,7 +6,7 @@ class Response
     public static function renderView(string $name, string $layout = 'layout', array $data = [])
     {
         extract($data);
-
+        $app['user'] = \dwes\core\App::get('appUser');
         ob_start(); 
         
         require __DIR__ . "/../app/views/$name.view.php"; 

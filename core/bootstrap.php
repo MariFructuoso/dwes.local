@@ -1,4 +1,12 @@
 <?php
+session_start();
+if (isset($_SESSION['loguedUser'])) {
+    $appUser = \dwes\core\App::getRepository(\dwes\app\repository\UsuarioRepository::class)->find($_SESSION['loguedUser']);
+} else {
+    $appUser = null;
+}
+
+\dwes\core\App::bind('appUser', $appUser);
 use dwes\core\App;
 use dwes\core\Router;
 use dwes\app\utils\MyLog; 

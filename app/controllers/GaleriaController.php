@@ -12,17 +12,22 @@ use dwes\app\exceptions\FileException;
 use dwes\app\exceptions\AppException;
 use dwes\app\exceptions\CategoriaException;
 use dwes\app\exceptions\QueryException;
+// Importamos el Helper
+use dwes\core\helpers\FlashMessage;
 
 class GaleriaController
 {
     public function index()
     {
-        $errores = [];
+        $errores = FlashMessage::get('errores', []);
+        $mensaje = FlashMessage::get('mensaje');
+        $descripcion = FlashMessage::get('descripcion');
+        $categoriaSeleccionada = FlashMessage::get('categoriaSeleccionada');
+        
+        // Variables por defecto si no vienen de sesión
+        $titulo = FlashMessage::get('titulo');
         $imagenes = [];
         $categorias = [];
-        $titulo = "";
-        $descripcion = "";
-        $mensaje = "";
 
         try {
             $imagenesRepository = App::getRepository(ImagenesRepository::class);
@@ -44,7 +49,7 @@ class GaleriaController
         Response::renderView(
             'galeria',
             'layout',
-            compact('errores', 'imagenes', 'categorias', 'titulo', 'descripcion', 'mensaje', 'imagenesRepository')
+            compact('errores', 'imagenes', 'categorias', 'titulo', 'descripcion', 'mensaje', 'imagenesRepository', 'categoriaSeleccionada')
         );
     }
 
@@ -61,18 +66,20 @@ class GaleriaController
 
     public function nueva()
     {
-        $errores = [];
-
         try {
             $imagenesRepository = App::getRepository(ImagenesRepository::class);
 
             $titulo = trim(htmlspecialchars($_POST['titulo'] ?? ''));
             $descripcion = trim(htmlspecialchars($_POST['descripcion']));
+            $categoria = trim(htmlspecialchars($_POST['categoria']));
+
+            // Guardamos los datos recibidos en FlashMessage para repoblar el formulario si hay error
+            FlashMessage::set('descripcion', $descripcion);
+            FlashMessage::set('categoriaSeleccionada', $categoria);
+            FlashMessage::set('titulo', $titulo);
 
             $tiposAceptados = ['image/jpeg', 'image/gif', 'image/png'];
             $imagen = new File('imagen', $tiposAceptados);
-
-            $categoria = trim(htmlspecialchars($_POST['categoria']));
 
             if (empty($categoria)) {
                 throw new CategoriaException;
@@ -83,26 +90,27 @@ class GaleriaController
             $imagenGaleria = new Imagen($imagen->getFileName(), $descripcion, $categoria);
             $imagenesRepository->save($imagenGaleria);
 
-            App::get('logger')->add("Se ha guardado una imagen: " . $imagenGaleria->getNombre());
+            $mensaje = "Se ha guardado una imagen: " . $imagenGaleria->getNombre();
+            App::get('logger')->add($mensaje);
+            
+            // Guardamos mensaje de éxito
+            FlashMessage::set('mensaje', $mensaje);
+            
+            // Limpiamos los datos del formulario de la sesión porque ha sido un éxito
+            FlashMessage::unset('descripcion');
+            FlashMessage::unset('categoriaSeleccionada');
 
-            App::get('router')->redirect('galeria');
         } catch (FileException $fileException) {
-            $errores[] = $fileException->getMessage();
+            FlashMessage::set('errores', [$fileException->getMessage()]);
         } catch (QueryException $queryException) {
-            $errores[] = $queryException->getMessage();
+            FlashMessage::set('errores', [$queryException->getMessage()]);
         } catch (AppException $appException) {
-            $errores[] = $appException->getMessage();
+            FlashMessage::set('errores', [$appException->getMessage()]);
         } catch (CategoriaException $e) {
-            $errores[] = "No se ha seleccionado una categoría válida";
+            FlashMessage::set('errores', ["No se ha seleccionado una categoría válida"]);
         }
 
-        if (!empty($errores)) {
-            echo "<div class='alert alert-danger'><ul>";
-            foreach ($errores as $error) {
-                echo "<li>" . $error . "</li>";
-            }
-            echo "</ul><p><a href='/galeria'>Volver a intentar</a></p></div>";
-            die();
-        }
+        // Siempre redirigimos a galeria (PRG Pattern)
+        App::get('router')->redirect('galeria');
     }
 }
