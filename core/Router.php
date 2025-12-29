@@ -18,33 +18,49 @@ class Router
         return $router;
     }
 
-    public function get(string $uri, string $controller): void
+    public function get(string $uri, string $controller, string $role = 'ROLE_ANONYMOUS'): void
     {
-        $this->routes['GET'][$uri] = $controller;
+        $this->routes['GET'][$uri] = [
+            'controller' => $controller,
+            'role' => $role 
+        ];
     }
 
-    public function post(string $uri, string $controller): void
+    public function post(string $uri, string $controller, string $role = 'ROLE_ANONYMOUS'): void
     {
-        $this->routes['POST'][$uri] = $controller;
+        $this->routes['POST'][$uri] = [
+            'controller' => $controller,
+            'role' => $role 
+        ];
     }
     public function direct(string $uri, string $method): void
     {
-        foreach ($this->routes[$method] as $route => $controller) {
-            
+        foreach ($this->routes[$method] as $route => $routerData) {
+            $controller = $routerData['controller'];
+            $minRole = $routerData['role']; 
+
             $urlRule = $this->prepareRoute($route);
-            
-            if (preg_match($urlRule, $uri, $matches) === 1) {
+
+            if (preg_match($urlRule, $uri, $matches)) {
                 
+                if (\dwes\core\Security::isUserGranted($minRole) === false) {
+                    
+                    if (!is_null(\dwes\core\App::get('appUser'))) {
+                        throw new \dwes\app\exceptions\AuthenticationException('Acceso no autorizado');
+                    } else {
+                        $this->redirect('login');
+                    }
+                }
                 $parameters = $this->getParametersRoute($route, $matches);
+                list($controller, $action) = explode('@', $controller);
                 
-                list($controllerClass, $action) = explode('@', $controller);
-                
-                if ($this->callAction($controllerClass, $action, $parameters) === true) {
+                if ($this->callAction($controller, $action, $parameters) === true) {
                     return;
                 }
             }
         }
-        throw new NotFoundException("No se ha definido una ruta para la uri solicitada");
+
+        throw new \dwes\app\exceptions\NotFoundException("No se ha definido una ruta para la uri solicitada");
     }
     private function callAction(string $controller, string $action, array $parameters): bool
     {
