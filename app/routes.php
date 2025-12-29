@@ -18,3 +18,5 @@ $router->post('asociados', 'AsociadosController@index');
 
 // PARCHE XAMPP
 $router->get('index.php', 'PagesController@index');
+
+$router->get ('galeria/:id', 'GaleriaController@show');

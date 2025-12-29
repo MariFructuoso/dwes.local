@@ -1,4 +1,5 @@
 <?php
+
 namespace dwes\app\controllers;
 
 use dwes\core\App;
@@ -44,6 +45,17 @@ class GaleriaController
             'galeria',
             'layout',
             compact('errores', 'imagenes', 'categorias', 'titulo', 'descripcion', 'mensaje', 'imagenesRepository')
+        );
+    }
+
+    public function show($id)
+    {
+        $imagenesRepository = App::getRepository(ImagenesRepository::class);
+        $imagen = $imagenesRepository->find($id);
+        Response::renderView(
+            'imagen-show',
+            'layout',
+            compact('imagen', 'imagenesRepository')
         );
     }
 
