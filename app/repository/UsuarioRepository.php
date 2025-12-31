@@ -10,10 +10,4 @@ class UsuarioRepository extends QueryBuilder
     {
         parent::__construct('usuarios', Usuario::class);
     }
-    //Para que funcione los metodos de usuario en Athcontroller
-    public function findByUsername(string $username): ?Usuario
-    {
-        $result = $this->findOneBy(['username' => $username]);
-        return $result;
-    }
 }
