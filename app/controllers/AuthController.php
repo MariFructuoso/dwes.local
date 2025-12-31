@@ -27,9 +27,7 @@ class AuthController
             
             FlashMessage::set('username', $_POST['username']);
 
-            $usuario = App::getRepository(UsuarioRepository::class)->findOneBy([
-                'username' => $_POST['username']
-            ]);
+            $usuario = App::getRepository(UsuarioRepository::class)->findByUsername($_POST['username']);
 
             if (!is_null($usuario) && Security::checkPassword($_POST['password'], $usuario->getPassword())) {
                 $_SESSION['loguedUser'] = $usuario->getId(); 

@@ -10,16 +10,40 @@ class Usuario implements IEntity
     private $password;
     private $role;
 
-    public function getId() { return $this->id; }
+    public function getId(): ?int 
+    { 
+        return $this->id; 
+    }
     
-    public function getUsername() { return $this->username; }
-    public function setUsername($username) { $this->username = $username; }
+    public function getUsername(): string 
+    { 
+        return $this->username; 
+    }
+    
+    public function setUsername(string $username): void 
+    { 
+        $this->username = $username; 
+    }
 
-    public function getPassword() { return $this->password; }
-    public function setPassword($password) { $this->password = $password; }
+    public function getPassword(): string 
+    { 
+        return $this->password; 
+    }
+    
+    public function setPassword(string $password): void 
+    { 
+        $this->password = $password; 
+    }
 
-    public function getRole() { return $this->role; }
-    public function setRole($role) { $this->role = $role; }
+    public function getRole(): string 
+    { 
+        return $this->role; 
+    }
+    
+    public function setRole(string $role): void 
+    { 
+        $this->role = $role; 
+    }
 
     public function toArray(): array
     {
@@ -31,7 +55,7 @@ class Usuario implements IEntity
         ];
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->username;
     }
