@@ -69,7 +69,7 @@ class AuthController
             if (!isset($_POST['re-password']) || empty($_POST['re-password']) || $_POST['password'] !== $_POST['re-password']) {
                 throw new ValidationException('Los dos password deben ser iguales'); 
             }
-
+            
             $password = Security::encrypt($_POST['password']); 
 
             $usuario = new Usuario(); 
