@@ -12,7 +12,6 @@ use dwes\app\exceptions\FileException;
 use dwes\app\exceptions\AppException;
 use dwes\app\exceptions\CategoriaException;
 use dwes\app\exceptions\QueryException;
-// Importamos el Helper
 use dwes\core\helpers\FlashMessage;
 
 class GaleriaController
@@ -33,12 +32,8 @@ class GaleriaController
             $categoriaRepository = App::getRepository(CategoriaRepository::class);
             $categorias = $categoriaRepository->findAll();
 
-            // --- CORRECCIÓN ERROR 403/FATAL ---
-            // Obtenemos el ID del usuario directamente de la sesión.
-            // $_SESSION['loguedUser'] guarda el ID (un entero), no el objeto.
             $usuarioId = $_SESSION['loguedUser'];
 
-            // Usamos el ID directamente para filtrar
             $imagenes = $imagenesRepository->findByUsuario($usuarioId);
             
         } catch (\Exception $e) {
@@ -72,7 +67,6 @@ class GaleriaController
             $descripcion = trim(htmlspecialchars($_POST['descripcion']));
             $categoria = trim(htmlspecialchars($_POST['categoria']));
 
-            // Guardamos los datos recibidos en FlashMessage para repoblar el formulario si hay error
             FlashMessage::set('descripcion', $descripcion);
             FlashMessage::set('categoriaSeleccionada', $categoria);
             FlashMessage::set('titulo', $titulo);
@@ -86,12 +80,8 @@ class GaleriaController
 
             $imagen->saveUploadFile(Imagen::RUTA_IMAGENES_SUBIDAS);
 
-            // Creamos la imagen con los datos del formulario
             $imagenGaleria = new Imagen($imagen->getFileName(), $descripcion, $categoria);
             
-            // --- CORRECCIÓN IMPORTANTE ---
-            // Asignamos el usuario a la imagen para que se guarde como TUYA.
-            // Asumimos que tu entidad Imagen tiene un método setUsuario($id)
             $imagenGaleria->setUsuario($_SESSION['loguedUser']); 
 
             $imagenesRepository->save($imagenGaleria);
@@ -99,10 +89,8 @@ class GaleriaController
             $mensaje = "Se ha guardado una imagen: " . $imagenGaleria->getNombre();
             App::get('logger')->add($mensaje);
 
-            // Guardamos mensaje de éxito
             FlashMessage::set('mensaje', $mensaje);
 
-            // Limpiamos los datos del formulario de la sesión porque ha sido un éxito
             FlashMessage::unset('descripcion');
             FlashMessage::unset('categoriaSeleccionada');
         } catch (FileException $fileException) {
@@ -115,7 +103,6 @@ class GaleriaController
             FlashMessage::set('errores', ["No se ha seleccionado una categoría válida"]);
         }
 
-        // Siempre redirigimos a galeria (PRG Pattern)
         App::get('router')->redirect('galeria');
     }
 
@@ -123,7 +110,6 @@ class GaleriaController
     {
         try {
             $imagenesRepository = App::getRepository(ImagenesRepository::class);
-            // Llamamos a la función borrar que añadimos al QueryBuilder
             $imagenesRepository->borrar($id);
             FlashMessage::set('mensaje', "Imagen eliminada correctamente.");
         } catch (\Exception $e) {
@@ -138,10 +124,9 @@ class GaleriaController
         $categoriaRepository = App::getRepository(CategoriaRepository::class);
         
         $imagen = $imagenesRepository->find($id);
-        /** @var Imagen $imagen */
+        /** @var Imagen $imagen */ //Para que getUsuario no de error
         $categorias = $categoriaRepository->findAll();
         
-        // CORRECCIÓN: Usamos $_SESSION['loguedUser'] directamente porque es el ID (número)
         if ($imagen->getUsuario() != $_SESSION['loguedUser']) {
              App::get('router')->redirect('galeria'); 
         }
@@ -159,14 +144,12 @@ class GaleriaController
             $id = $_POST['id'];
             $imagenesRepository = App::getRepository(ImagenesRepository::class);
             $imagen = $imagenesRepository->find($id);
-            /** @var Imagen $imagen */
+            /** @var Imagen $imagen */ //Parta que los set no den error
 
-            // Actualizamos los datos
             $imagen->setNombre($_POST['titulo']);
             $imagen->setDescripcion($_POST['descripcion']);
             $imagen->setCategoria($_POST['categoria']);
             
-            // CORRECCIÓN: Aseguramos que el usuario sigue siendo el mismo (usando la sesión directa)
             $imagen->setUsuario($_SESSION['loguedUser']);
 
             $imagenesRepository->update($imagen);

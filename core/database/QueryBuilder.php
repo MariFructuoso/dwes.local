@@ -11,7 +11,7 @@ use dwes\app\exceptions\NotFoundException;
 
 abstract class QueryBuilder
 {
-    private $connection;
+    protected $connection;
     private $table;
     private $classEntity;
 
