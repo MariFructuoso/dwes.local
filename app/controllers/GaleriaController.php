@@ -23,8 +23,7 @@ class GaleriaController
         $mensaje = FlashMessage::get('mensaje');
         $descripcion = FlashMessage::get('descripcion');
         $categoriaSeleccionada = FlashMessage::get('categoriaSeleccionada');
-        
-        // Variables por defecto si no vienen de sesión
+
         $titulo = FlashMessage::get('titulo');
         $imagenes = [];
         $categorias = [];
@@ -33,16 +32,16 @@ class GaleriaController
             $imagenesRepository = App::getRepository(ImagenesRepository::class);
             $categoriaRepository = App::getRepository(CategoriaRepository::class);
             $categorias = $categoriaRepository->findAll();
-            $imagenes = $imagenesRepository->findAll();
-        } catch (FileException $fileException) {
-            $errores[] = $fileException->getMessage();
-        } catch (QueryException $queryException) {
-            $errores[] = $queryException->getMessage();
-        } catch (AppException $appException) {
-            $errores[] = $appException->getMessage();
-        } catch (CategoriaException $categoriaException) {
-            $errores[] = "No se ha seleccionado una categoría válida";
-        } catch (\PDOException $e) {
+
+            // --- CORRECCIÓN ERROR 403/FATAL ---
+            // Obtenemos el ID del usuario directamente de la sesión.
+            // $_SESSION['loguedUser'] guarda el ID (un entero), no el objeto.
+            $usuarioId = $_SESSION['loguedUser'];
+
+            // Usamos el ID directamente para filtrar
+            $imagenes = $imagenesRepository->findByUsuario($usuarioId);
+            
+        } catch (\Exception $e) {
             $errores[] = "Error: " . $e->getMessage();
         }
 
@@ -87,19 +86,25 @@ class GaleriaController
 
             $imagen->saveUploadFile(Imagen::RUTA_IMAGENES_SUBIDAS);
 
+            // Creamos la imagen con los datos del formulario
             $imagenGaleria = new Imagen($imagen->getFileName(), $descripcion, $categoria);
+            
+            // --- CORRECCIÓN IMPORTANTE ---
+            // Asignamos el usuario a la imagen para que se guarde como TUYA.
+            // Asumimos que tu entidad Imagen tiene un método setUsuario($id)
+            $imagenGaleria->setUsuario($_SESSION['loguedUser']); 
+
             $imagenesRepository->save($imagenGaleria);
 
             $mensaje = "Se ha guardado una imagen: " . $imagenGaleria->getNombre();
             App::get('logger')->add($mensaje);
-            
+
             // Guardamos mensaje de éxito
             FlashMessage::set('mensaje', $mensaje);
-            
+
             // Limpiamos los datos del formulario de la sesión porque ha sido un éxito
             FlashMessage::unset('descripcion');
             FlashMessage::unset('categoriaSeleccionada');
-
         } catch (FileException $fileException) {
             FlashMessage::set('errores', [$fileException->getMessage()]);
         } catch (QueryException $queryException) {
@@ -111,6 +116,67 @@ class GaleriaController
         }
 
         // Siempre redirigimos a galeria (PRG Pattern)
+        App::get('router')->redirect('galeria');
+    }
+
+    public function borrar($id)
+    {
+        try {
+            $imagenesRepository = App::getRepository(ImagenesRepository::class);
+            // Llamamos a la función borrar que añadimos al QueryBuilder
+            $imagenesRepository->borrar($id);
+            FlashMessage::set('mensaje', "Imagen eliminada correctamente.");
+        } catch (\Exception $e) {
+            FlashMessage::set('errores', ["No se pudo eliminar la imagen: " . $e->getMessage()]);
+        }
+        App::get('router')->redirect('galeria');
+    }
+    
+    public function editar($id)
+    {
+        $imagenesRepository = App::getRepository(ImagenesRepository::class);
+        $categoriaRepository = App::getRepository(CategoriaRepository::class);
+        
+        $imagen = $imagenesRepository->find($id);
+        /** @var Imagen $imagen */
+        $categorias = $categoriaRepository->findAll();
+        
+        // CORRECCIÓN: Usamos $_SESSION['loguedUser'] directamente porque es el ID (número)
+        if ($imagen->getUsuario() != $_SESSION['loguedUser']) {
+             App::get('router')->redirect('galeria'); 
+        }
+
+        Response::renderView(
+            'galeria-editar',
+            'layout',
+            compact('imagen', 'categorias')
+        );
+    }
+
+    public function update()
+    {
+        try {
+            $id = $_POST['id'];
+            $imagenesRepository = App::getRepository(ImagenesRepository::class);
+            $imagen = $imagenesRepository->find($id);
+            /** @var Imagen $imagen */
+
+            // Actualizamos los datos
+            $imagen->setNombre($_POST['titulo']);
+            $imagen->setDescripcion($_POST['descripcion']);
+            $imagen->setCategoria($_POST['categoria']);
+            
+            // CORRECCIÓN: Aseguramos que el usuario sigue siendo el mismo (usando la sesión directa)
+            $imagen->setUsuario($_SESSION['loguedUser']);
+
+            $imagenesRepository->update($imagen);
+            
+            FlashMessage::set('mensaje', "Imagen actualizada correctamente.");
+            
+        } catch (\Exception $e) {
+            FlashMessage::set('errores', ["No se pudo actualizar: " . $e->getMessage()]);
+        }
+        
         App::get('router')->redirect('galeria');
     }
 }

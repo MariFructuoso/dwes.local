@@ -47,6 +47,10 @@ use dwes\app\utils\Utils;
             <a href="/galeria"><i class="fa fa-image sr-icons"></i> Galería</a>
           </li>
 
+          <li class="<?= Utils::esOpcionMenuActiva('/exposiciones') ? 'active' : '' ?> lien">
+            <a href="/exposiciones"><i class="fa fa-calendar sr-icons"></i> Exposiciones</a>
+          </li>
+
           <li class="<?= Utils::esOpcionMenuActiva('/asociados') ? 'active' : '' ?> lien">
             <a href="/asociados"><i class="fa fa-handshake-o sr-icons"></i> Asociados</a>
           </li>

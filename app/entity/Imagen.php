@@ -15,6 +15,9 @@ class Imagen implements IEntity
     private $numVisualizaciones;
     private $numLikes;
     private $numDownloads;
+    
+    // --- NUEVA PROPIEDAD ---
+    private $usuario; 
 
     public function __construct($nombre = "", $descripcion = "", $categoria = 1, $numVisualizaciones = 0, $numLikes = 0, $numDownloads = 0)
     {
@@ -25,6 +28,7 @@ class Imagen implements IEntity
         $this->numVisualizaciones = $numVisualizaciones;
         $this->numLikes = $numLikes;
         $this->numDownloads = $numDownloads;
+        // El usuario se puede dejar null al inicio y asignarlo con el setter
     }
 
     public function getId()
@@ -98,6 +102,20 @@ class Imagen implements IEntity
         return $this;
     }
 
+    // --- NUEVOS MÉTODOS GETTER Y SETTER PARA USUARIO ---
+    
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario($usuario): Imagen
+    {
+        $this->usuario = $usuario;
+        return $this;
+    }
+    // ---------------------------------------------------
+
     public function __toString()
     {
         return $this->descripcion;
@@ -132,7 +150,9 @@ class Imagen implements IEntity
             'numVisualizaciones' => $this->getNumVisualizaciones(),
             'numLikes' => $this->getNumLikes(),
             'numDownloads' => $this->getNumDownloads(),
-            'categoria' => $this->getCategoria()
+            'categoria' => $this->getCategoria(),
+            // --- IMPORTANTE: Añadir el usuario al array para que se guarde en la BBDD ---
+            'usuario' => $this->getUsuario() 
         ];
     }
 }

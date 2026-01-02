@@ -16,7 +16,7 @@
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
             <h2>Subir imágenes:</h2>
             <hr>
-            
+
             <?php include __DIR__ . '/show-error.part.view.php'; ?>
 
             <form class="form-horizontal" action="/galeria/nueva" method="post" enctype="multipart/form-data">
@@ -32,7 +32,7 @@
                         <select class="form-control" name="categoria">
                             <?php foreach ($categorias as $categoria): ?>
                                 <option value="<?= $categoria->getId() ?>"
-                                    <?= ($categoriaSeleccionada == $categoria->getId()) ? 'selected' : '' ?> >
+                                    <?= ($categoriaSeleccionada == $categoria->getId()) ? 'selected' : '' ?>>
                                     <?= $categoria->getNombre() ?>
                                 </option>
                             <?php endforeach; ?>
@@ -49,37 +49,61 @@
                     </div>
                 </div>
             </form>
-            
+
             <hr class="divider">
-            
+
             <div class="imagenes_galeria">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
                             <th scope="col">Imagen</th>
-                            <th scope="col">Categoria</th> <th scope="col">Visualizaciones</th>
-                            <th scope="col">Likes</th>
-                            <th scope="col">Descargas</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($imagenes as $imagen): ?>
                             <tr>
-                                <th scope="row"><?= $imagen->getNombre() ?></th>
-                                <td>
+                                <th scope="row">
                                     <a href="/galeria/<?= $imagen->getId() ?>">
-                                        <img src="<?= $imagen->getUrlSubidas() ?>"
-                                            alt="<?= $imagen->getDescripcion() ?>"
-                                            title="<?= $imagen->getDescripcion() ?>"
-                                            width="100px">
+                                        <?= $imagen->getNombre() ?>
                                     </a>
+                                </th>
+                                <td>
+                                    <img src="<?= $imagen->getUrlSubidas() ?>"
+                                        alt="<?= $imagen->getDescripcion() ?>"
+                                        width="100px">
                                 </td>
                                 <td><?= $imagenesRepository->getCategoria($imagen)->getNombre() ?></td>
-                                
-                                <td><?= $imagen->getNumVisualizaciones() ?></td>
-                                <td><?= $imagen->getNumLikes() ?></td>
-                                <td><?= $imagen->getNumDownloads() ?></td>
+
+                                <td>
+                                    <a href="/galeria/borrar/<?= $imagen->getId() ?>"
+                                        class="btn btn-danger btn-xs"
+                                        onclick="return confirm('¿Seguro que quieres borrar esta imagen?')">
+                                        <i class="fa fa-trash"></i> Borrar
+                                    </a>
+
+                                    <a href="/exposicion/anadirimagen/<?= $imagen->getId() ?>"
+                                        class="btn btn-info btn-xs">
+                                        <i class="fa fa-plus"></i> Añadir a Exposición
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/galeria/editar/<?= $imagen->getId() ?>" class="btn btn-warning btn-xs">
+                                        <i class="fa fa-pencil"></i> Editar
+                                    </a>
+
+                                    <a href="/galeria/borrar/<?= $imagen->getId() ?>"
+                                        class="btn btn-danger btn-xs"
+                                        onclick="return confirm('¿Seguro?')">
+                                        <i class="fa fa-trash"></i> Borrar
+                                    </a>
+
+                                    <a href="/exposicion/anadirimagen/<?= $imagen->getId() ?>" class="btn btn-info btn-xs">
+                                        <i class="fa fa-plus"></i> Expo
+                                    </a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
